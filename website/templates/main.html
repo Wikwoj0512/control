@@ -1,0 +1,39 @@
+<html>
+<head>
+    <title>Chat</title>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.8/socket.io.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+</head>
+<body>
+<script type="text/javascript">
+ $(document).ready(function ()
+    {
+        $('.NO-CACHE').attr('src',function () { return $(this).attr('src') + "?a=" + Math.random()});
+    });
+$(document).ready(function() {
+    var socket = io.connect({{adress}});
+    socket.on("message", function(msg){
+        if(msg){$("#messages").prepend('<li>'+msg+'</li>');}
+        $("#zdj").attr("src", "img.jpg?a=" + Math.random());
+    });
+    socket.on('refresh', function(data) {
+         $("#zdj").attr("src", "img.jpg?a=" + Math.random());
+     });
+
+    $('#sendbutton').on("click", function(){
+        if($('#myMessage').val()){
+            socket.send($('#myMessage').val());
+        }
+        $('#myMessage').val('');
+    });
+});
+</script>
+<img class="NO-CACHE" id="zdj" width="600px" src="img.jpg">
+
+<input type="text" id="myMessage">
+<button id="sendbutton">Send</button>
+<ul id="messages" style="margin-left: 100px;">
+</ul>
+
+</body>
+</html>
